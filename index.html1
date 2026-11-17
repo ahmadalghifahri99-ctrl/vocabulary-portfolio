@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Arabic & English Vocabulary Portfolio - Al Ghifari</title>
+  <style>
+    :root {
+      --primary: #1E3A8A;
+      --primary-mid: #2563EB;
+      --primary-dark: #0F172A;
+      --primary-light: #EFF6FF;
+      --gold: #D97706;
+      --bg: #F1F5F9;
+      --card: #FFFFFF;
+      --text: #0F172A;
+      --text-muted: #64748B;
+      --border: #CBD5E1;
+      --danger: #DC2626;
+      --shadow: 0 3px 12px rgba(15, 23, 42, 0.06);
+    }
+
+    body.dark {
+      --bg: #090D16;
+      --card: #111827;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border: #1E293B;
+      --primary-light: #172554;
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 90px;
+      line-height: 1.45;
+    }
+
+    .app-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* HEADER BIRU EKSEKUTIF */
+    .header {
+      background: linear-gradient(145deg, #0F172A 0%, #1E3A8A 65%, #1D4ED8 100%);
+      color: #FFFFFF;
+      padding: 18px 18px 22px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 6px 20px rgba(30, 58, 138, 0.25);
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .header-sub {
+      font-size: 12px;
+      color: #BFDBFE;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .arabic-greeting {
+      font-family: "Traditional Arabic", "Amiri", "Scheherazade New", serif;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.65;
+      direction: rtl;
+      text-align: right;
+      color: #FFFFFF;
+      margin-bottom: 14px;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      border-right: 3px solid #FBBF24;
+    }
+
+    /* KARTU PORTOFOLIO */
+    .portfolio-card {
+      background: rgba(15, 23, 42, 0.48);
+      border: 1px solid rgba(191, 219, 254, 0.22);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .portfolio-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .tag-gold {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      background: linear-gradient(90deg, #F59E0B, #FBBF24);
+      color: #0F172A;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .motto-text {
+      font-size: 11.5px;
+      color: #FDE68A;
+      font-weight: 700;
+    }
+
+    .portfolio-card h2 {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .portfolio-card p {
+      font-size: 11.5px;
+      color: #DBEAFE;
+      margin-top: 3px;
+    }
+
+    /* CONTENT & TABS */
+    .content {
+      padding: 16px;
+    }
+
+    .tab-page {
+      display: none;
+    }
+
+    .tab-page.active {
+      display: block;
+    }
+
+    /* STAT CARDS (TERPISAH RAPI TANPA OVERLAP) */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      color: #FFFFFF;
+    }
+
+    .stat-card.royal {
+      background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+    }
+
+    .stat-card.navy {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    }
+
+    .stat-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #E2E8F0;
+    }
+
+    .badge-pill {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .stat-sub {
+      font-size: 11.5px;
+      color: #CBD5E1;
+      margin-bottom: 10px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #38BDF8;
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    /* LANGUAGE SEGMENT CONTROL */
+    .lang-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      background: var(--card);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .lang-btn {
+      padding: 9px 6px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: var(--primary-mid);
+      color: #FFFFFF;
+    }
+
+    /* FILTER & SEARCH BOX */
+    .filter-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .search-row {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .search-row .search-ico {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .search-row input {
+      width: 100%;
+      padding: 11px 14px 11px 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .chip-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      scrollbar-width: none;
+    }
+    .chip-scroll::-webkit-scrollbar { display: none; }
+
+    .chip {
+      white-space: nowrap;
+      padding: 7px 13px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .chip.active {
+      background: var(--primary-mid);
+      color: #FFFFFF;
+      border-color: var(--primary-mid);
+    }
+
+    .select-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    select, input[type="text"], input[type="number"], input[type="time"] {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* WORD CARDS */
+    .group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 6px 0 12px;
+      padding: 0 2px;
+    }
+
+    .group-header h3 {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    body.dark .group-header h3 { color: #60A5FA; }
+
+    .word-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .word-card.hafal {
+      border-left: 5px solid #2563EB;
+      background: var(--primary-light);
+    }
+
+    .word-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .meta-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 7px;
+      background: var(--bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .meta-badge.lang-ar {
+      background: #DBEAFE;
+      color: #1E40AF;
+      border: none;
+    }
+
+    .meta-badge.lang-en {
+      background: #E0E7FF;
+      color: #3730A3;
+      border: none;
+    }
+
+    .meta-badge.jenis {
+      background: #F1F5F9;
+      color: #0F172A;
+      border: 1px solid #CBD5E1;
+    }
+
+    .meta-badge.luar {
+      background: #FEF3C7;
+      color: #92400E;
+      border: none;
+    }
+
+    .arab-text {
+      font-family: "Traditional Arabic", "Amiri", "Scheherazade New", serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.6;
+      direction: rtl;
+      text-align: right;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .eng-text {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+    }
+
+    body.dark .eng-text {
+      color: #93C5FD;
+    }
+
+    .arti-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .catatan-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* ACTION BAR DI BAWAH KARTU AGAR LEGA */
+    .card-footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .check-group, .manage-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .act-btn {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-muted);
+      border-radius: 9px;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .act-btn.checked-baca {
+      background: #E0F2FE;
+      color: #0369A1;
+      border-color: #7DD3FC;
+    }
+
+    .act-btn.checked-hafal {
+      background: #1D4ED8;
+      color: #FFFFFF;
+      border-color: #1D4ED8;
+    }
+
+    .act-btn.starred {
+      background: #FEF3C7;
+      color: #D97706;
+      border-color: #FCD34D;
+    }
+
+    .act-btn.edit-btn {
+      color: var(--primary-mid);
+      border-color: #BFDBFE;
+    }
+
+    .act-btn.del-btn {
+      color: var(--danger);
+      border-color: #FECACA;
+    }
+
+    /* PANELS & FORMS */
+    .card-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-panel h3 {
+      font-size: 15.5px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      color: var(--primary);
+    }
+
+    body.dark .card-panel h3 { color: #60A5FA; }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #1D4ED8 0%, #1E3A8A 100%);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 11px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* QUIZ & FLASHCARD */
+    .flashcard {
+      background: linear-gradient(145deg, #0F172A, #1E3A8A);
+      color: #FFFFFF;
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 14px;
+      border: 1px solid rgba(147, 197, 253, 0.25);
+    }
+
+    .flashcard .word-big {
+      font-family: "Traditional Arabic", "Amiri", serif;
+      font-size: 34px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .quiz-option {
+      width: 100%;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: block;
+    }
+
+    .quiz-option.correct {
+      background: #DBEAFE;
+      border-color: #2563EB;
+      color: #1E3A8A;
+    }
+
+    .quiz-option.wrong {
+      background: #FEE2E2;
+      border-color: #EF4444;
+      color: #991B1B;
+    }
+
+    /* MODAL OVERLAY */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 18px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* BOTTOM NAVIGATION */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 9px 4px 11px;
+      z-index: 100;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .nav-item {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .nav-item span.ico {
+      font-size: 19px;
+    }
+
+    .nav-item.active {
+      color: var(--primary-mid);
+    }
+
+    body.dark .nav-item.active {
+      color: #60A5FA;
+    }
+
+    .toast {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0F172A;
+      color: #FFFFFF;
+      border: 1px solid #3B82F6;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 999;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast">Tersimpan!</div>
+
+  <div class="app-wrap">
+    <!-- HEADER BIRU EKSEKUTIF -->
+    <div class="header">
+      <div class="header-bar">
+        <div class="header-sub" id="headerSub">Arabic & English Vocabulary Portfolio</div>
+        <div class="header-actions">
+          <button class="icon-btn" onclick="toggleDark()" title="Mode Gelap">🌙</button>
+          <button class="icon-btn" onclick="bukaModalTema()" title="Kelola Tema">⚙️</button>
+          <button class="icon-btn" onclick="switchTab('tab-profil')" title="Profil & Jadwal">👤</button>
+        </div>
+      </div>
+
+      <div class="arabic-greeting" id="headerGreeting" dir="rtl">
+        السَّلَامُ عَلَيْكُمْ وَأَهْلًا وَسَهْلًا يَا الْغِفَارِي
+      </div>
+
+      <div class="portfolio-card">
+        <div class="portfolio-top">
+          <span class="tag-gold">DAILY VOCABULARY PORTFOLIO</span>
+          <span class="motto-text" id="bannerMotto">"Language Mastery"</span>
+        </div>
+        <h2 id="bannerTitle">0 / 15 Vocabulary Mastered Today</h2>
+        <p id="bannerSub">Konsistensi harian membangun aset ilmu bahasa Arab & Inggris.</p>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ===================================== -->
+      <!-- TAB 1: PORTOFOLIO KOSAKATA            -->
+      <!-- ===================================== -->
+      <div id="tab-beranda" class="tab-page active">
+        
+        <div class="stats-grid">
+          <div class="stat-card royal">
+            <div class="stat-head">
+              <span>Hafal Mutqin</span>
+              <span class="badge-pill" id="statPersenHafal">0%</span>
+            </div>
+            <div class="stat-sub" id="statTeksHafal">0 dari 0 kosakata</div>
+            <div class="progress-track">
+              <div class="progress-fill" id="barHafal" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="stat-card navy">
+            <div class="stat-head">
+              <span>Sudah Dibaca</span>
+              <span class="badge-pill" id="statPersenBaca">0%</span>
+            </div>
+            <div class="stat-sub" id="statTeksBaca">0 dari 0 kosakata</div>
+            <div class="progress-track">
+              <div class="progress-fill" id="barBaca" style="width: 0%; background:#FBBF24;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PEMILIH BAHASA (ARAB / INGGRIS / SEMUA) -->
+        <div class="lang-switch">
+          <button class="lang-btn active" onclick="setFilterBahasa('ALL', this)">🌐 Semua</button>
+          <button class="lang-btn" onclick="setFilterBahasa('ar', this)">🇸🇦 Arab (Mufrodat)</button>
+          <button class="lang-btn" onclick="setFilterBahasa('en', this)">🇬🇧 English (Vocab)</button>
+        </div>
+
+        <!-- FILTER PENCARIAN & KATEGORI -->
+        <div class="filter-box">
+          <div class="search-row">
+            <span class="search-ico">🔍</span>
+            <input type="text" id="searchInput" onkeyup="renderList()" placeholder="Cari kata Arab, English, arti, halaman, tema...">
+          </div>
+
+          <div class="chip-scroll" id="sumberChips">
+            <button class="chip active" onclick="setFilterSumber('ALL', this)">Semua Sumber</button>
+            <button class="chip" onclick="setFilterSumber('Saluni 1', this)">Saluni Jilid 1</button>
+            <button class="chip" onclick="setFilterSumber('Saluni 2', this)">Saluni Jilid 2</button>
+            <button class="chip" onclick="setFilterSumber('Saluni 3', this)">Saluni Jilid 3</button>
+            <button class="chip" onclick="setFilterSumber('Luar Kamus', this)">Kitab / Acak</button>
+            <button class="chip" onclick="setFilterSumber('English Daily', this)">English Daily</button>
+            <button class="chip" onclick="setFilterSumber('English Business', this)">English Business</button>
+            <button class="chip" onclick="setFilterSumber('SULIT', this)">★ Sulit</button>
+          </div>
+
+          <div class="select-grid">
+            <select id="filterJenis" onchange="renderList()">
+              <option value="ALL">Semua Jenis Kata</option>
+              <optgroup label="Bahasa Arab">
+                <option value="Isim">Isim (Kata Benda)</option>
+                <option value="Fi'il">Fi'il (Kata Kerja)</option>
+                <option value="Kata Sifat">Kata Sifat (Shifah)</option>
+                <option value="Ungkapan">Ungkapan (Ta'bir)</option>
+              </optgroup>
+              <optgroup label="Bahasa Inggris">
+                <option value="Noun">Noun (Kata Benda)</option>
+                <option value="Verb">Verb (Kata Kerja)</option>
+                <option value="Adjective">Adjective (Kata Sifat)</option>
+                <option value="Phrase">Phrase / Idiom (Ungkapan)</option>
+                <option value="Adverb">Adverb (Keterangan)</option>
+              </optgroup>
+            </select>
+
+            <select id="filterTema" onchange="renderList()">
+              <option value="ALL"
