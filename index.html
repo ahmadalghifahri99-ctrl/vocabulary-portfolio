@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bank Mufrodat & Hafalan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .arab { font-family: 'Amiri', serif; }
+  </style>
+</head>
+<body class="bg-[#F4F6F5] text-gray-800 transition-colors duration-200" id="appBody">
+
+  <div class="max-w-md mx-auto min-h-screen bg-[#F4F6F5] shadow-xl pb-12" id="mainContainer">
+    
+    <!-- Header Hijau -->
+    <div class="bg-[#0B5D3B] text-white p-5 rounded-b-3xl shadow-md">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">Assalamualaikum</h1>
+          <p class="text-xs text-emerald-200">Catatan Mufrodat & Hafalan Pribadi</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="toggleDarkMode()" class="p-2 rounded-full bg-white/10 hover:bg-white/20 text-sm" title="Mode Gelap">🌙</button>
+          <button onclick="resetProgres()" class="p-2 rounded-full bg-white/10 hover:bg-white/20 text-sm" title="Reset Progres">↺</button>
+        </div>
+      </div>
+
+      <!-- Banner Info -->
+      <div class="bg-[#18382B] border border-emerald-700/50 rounded-2xl p-4 flex justify-between items-center">
+        <div>
+          <span class="text-[10px] uppercase tracking-wider text-emerald-300 font-semibold">Target Harian</span>
+          <h2 class="font-bold text-base mt-0.5">Mutqin Mufrodat & Matan</h2>
+          <p class="text-xs text-gray-300 mt-1">Centang item setelah selesai muroja'ah.</p>
+        </div>
+        <div class="w-11 h-11 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-300 font-bold text-lg">
+          📖
+        </div>
+      </div>
+    </div>
+
+    <!-- Konten Utama -->
+    <div class="px-4 -mt-3 space-y-4">
+
+      <!-- 2 Kartu Progres -->
+      <div class="grid grid-cols-2 gap-3 pt-5">
+        <div class="bg-[#0E6B45] text-white p-3.5 rounded-2xl shadow-sm">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-xs font-semibold">Progres Hafalan</span>
+            <span id="persenHafalan" class="text-[11px] bg-white/20 px-2 py-0.5 rounded-full font-bold">0%</span>
+          </div>
+          <p id="teksHafalan" class="text-[11px] text-emerald-100 mb-2">0 dari 0 Mufrodat</p>
+          <div class="w-full bg-black/25 h-1.5 rounded-full overflow-hidden">
+            <div id="barHafalan" class="bg-emerald-300 h-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="bg-[#09422A] text-white p-3.5 rounded-2xl shadow-sm">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-xs font-semibold">Favorit / Sulit</span>
+            <span id="jumlahFavorit" class="text-[11px] bg-white/20 px-2 py-0.5 rounded-full font-bold">0</span>
+          </div>
+          <p class="text-[11px] text-emerald-100 mb-2">Perlu muroja'ah ekstra</p>
+          <button onclick="toggleFilterFavorit()" id="btnFilterFav" class="text-[11px] bg-amber-400 text-gray-900 font-semibold px-2.5 py-0.5 rounded-full">
+            Lihat Favorit
+          </button>
+        </div>
+      </div>
+
+      <!-- Kolom Pencarian -->
+      <div class="relative">
+        <input type="text" id="searchInput" onkeyup="renderMateri()" placeholder="Cari mufrodat atau arti..." 
+          class="w-full bg-white border border-gray-200 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-[#0B5D3B] shadow-sm text-gray-800">
+        <span class="absolute left-3.5 top-2.5 text-gray-400 text-sm">🔍</span>
+      </div>
+
+      <!-- Daftar Bab (Accordion) -->
+      <div id="daftarBab" class="space-y-3"></div>
+
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. DATABASE MUFRODAT (Edit / Tambah di sini)
+    // ==========================================
+    const dataMateri = [
+      {
+        bab: "Bab 1 - Kata Kerja Harian (Fi'il)",
+        items: [
+          { id: "m1", arab: "اِسْتَيْقَظَ - يَسْتَيْقِظُ", arti: "Bangun tidur", catatan: "Masdar: اِسْتِيْقَاظًا" },
+          { id: "m2", arab: "تَوَضَّأَ - يَتَوَضَّأُ", arti: "Berwudhu", catatan: "Fi'il Amr: تَوَضَّأْ" },
+          { id: "m3", arab: "رَاجَعَ - يُرَاجِعُ", arti: "Mengulang pelajaran (Muroja'ah)", catatan: "Masdar: مُرَاجَعَةً" },
+          { id: "m4", arab: "حَفِظَ - يَحْفَظُ", arti: "Menghafal / Menjaga", catatan: "Masdar: حِفْظًا" }
+        ]
+      },
+      {
+        bab: "Bab 2 - Istilah Ekonomi & Muamalah",
+        items: [
+          { id: "m5", arab: "رَأْسُ الْمَالِ", arti: "Modal usaha", catatan: "Jamak: رُؤُوْسُ الْأَمْوَالِ" },
+          { id: "m6", arab: "رِبْحٌ / أَرْبَاحٌ", arti: "Keuntungan / Laba", catatan: "Lawan kata: خَسَارَةٌ (Kerugian)" },
+          { id: "m7", arab: "بَيْعٌ وَشِرَاءٌ", arti: "Jual beli", catatan: "Muamalah maliyah" }
+        ]
+      }
+    ];
+
+    // ==========================================
+    // 2. LOGIKA PENYIMPANAN & TAMPILAN
+    // ==========================================
+    let hafalSet = new Set(JSON.parse(localStorage.getItem('hafal_mufrodat') || '[]'));
+    let favSet = new Set(JSON.parse(localStorage.getItem('fav_mufrodat') || '[]'));
+    let hanyaFavorit = false;
+    let isDark = false;
+
+    function simpanState() {
+      localStorage.setItem('hafal_mufrodat', JSON.stringify([...hafalSet]));
+      localStorage.setItem('fav_mufrodat', JSON.stringify([...favSet]));
+      updateStatistik();
+    }
+
+    function toggleHafal(id) {
+      hafalSet.has(id) ? hafalSet.delete(id) : hafalSet.add(id);
+      simpanState();
+      renderMateri();
+    }
+
+    function toggleFav(id) {
+      favSet.has(id) ? favSet.delete(id) : favSet.add(id);
+      simpanState();
+      renderMateri();
+    }
+
+    function toggleFilterFavorit() {
+      hanyaFavorit = !hanyaFavorit;
+      const btn = document.getElementById('btnFilterFav');
+      btn.textContent = hanyaFavorit ? "Tampilkan Semua" : "Lihat Favorit";
+      renderMateri();
+    }
+
+    function updateStatistik() {
+      const total = dataMateri.reduce((acc, b) => acc + b.items.length, 0);
+      const selesai = hafalSet.size;
+      const persen = total === 0 ? 0 : Math.round((selesai / total) * 100);
+
+      document.getElementById('persenHafalan').textContent = `${persen}%`;
+      document.getElementById('teksHafalan').textContent = `${selesai} dari ${total} Mufrodat`;
+      document.getElementById('barHafalan').style.width = `${persen}%`;
+      document.getElementById('jumlahFavorit').textContent = favSet.size;
+    }
+
+    function renderMateri() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const container = document.getElementById('daftarBab');
+      container.innerHTML = '';
+
+      dataMateri.forEach((kelompok, idx) => {
+        const filteredItems = kelompok.items.filter(item => {
+          const cocokTeks = item.arab.includes(keyword) || item.arti.toLowerCase().includes(keyword) || item.catatan.toLowerCase().includes(keyword);
+          const cocokFav = !hanyaFavorit || favSet.has(item.id);
+          return cocokTeks && cocokFav;
+        });
+
+        if (filteredItems.length === 0) return;
+
+        const babCard = document.createElement('div');
+        babCard.className = "bg-white rounded-2xl p-4 shadow-sm border border-gray-100";
+
+        let itemsHTML = filteredItems.map((item, i) => {
+          const sudahHafal = hafalSet.has(item.id);
+          const isFav = favSet.has(item.id);
+          return `
+            <div class="flex items-center justify-between p-3 rounded-xl border transition ${sudahHafal ? 'bg-[#E8F5EE] border-emerald-300' : 'bg-gray-50 border-gray-100'}">
+              <div class="flex items-center gap-3">
+                <span class="w-7 h-7 rounded-lg ${sudahHafal ? 'bg-[#1B8A5A]' : 'bg-[#0B5D3B]'} text-white text-xs font-bold flex items-center justify-center shrink-0">
+                  ${i + 1}
+                </span>
+                <div>
+                  <p class="arab text-xl font-bold text-gray-900 leading-relaxed">${item.arab}</p>
+                  <p class="text-xs font-semibold text-gray-700">${item.arti}</p>
+                  <p class="text-[11px] text-gray-500">${item.catatan}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="toggleFav('${item.id}')" class="text-lg ${isFav ? 'text-amber-500' : 'text-gray-300'}" title="Tandai Sulit">★</button>
+                <button onclick="toggleHafal('${item.id}')" class="w-7 h-7 rounded-full border-2 flex items-center justify-center ${sudahHafal ? 'border-[#0B5D3B] bg-[#0B5D3B] text-white' : 'border-gray-300 text-transparent'}">
+                  ✓
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        babCard.innerHTML = `
+          <details open>
+            <summary class="list-none cursor-pointer flex justify-between items-center pb-2">
+              <div>
+                <h3 class="font-bold text-sm text-gray-900">${kelompok.bab}</h3>
+                <p class="text-xs text-emerald-700 font-medium">${filteredItems.length} Item</p>
+              </div>
+              <span class="text-gray-400 text-xs">▼</span>
+            </summary>
+            <div class="space-y-2.5 mt-2 pt-2 border-t border-gray-100">
+              ${itemsHTML}
+            </div>
+          </details>
+        `;
+        container.appendChild(babCard);
+      });
+    }
+
+    function toggleDarkMode() {
+      isDark = !isDark;
+      document.getElementById('mainContainer').classList.toggle('bg-gray-900', isDark);
+      document.getElementById('appBody').classList.toggle('bg-gray-950', isDark);
+    }
+
+    function resetProgres() {
+      if (confirm("Reset semua centang hafalan?")) {
+        hafalSet.clear();
+        simpanState();
+        renderMateri();
+      }
+    }
+
+    updateStatistik();
+    renderMateri();
+  </script>
+</body>
+</html>
